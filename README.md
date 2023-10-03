@@ -5,9 +5,35 @@ This is Git repository for the project of Team Q in SOEN-6611 by Professor Panka
 
 | Member | Contribution |
 |----------|----------|
-| Goutham Susarla | Defining SMART goals and GQM inquiries, specifying use cases, organizing team meetings, generating LaTeX documentation, and overseeing project management. |
-| Vishwassingh Tomar | Defining goals of Problem 1, Management of the project, providing assistance to the team for each task, SMART principles and GQM (Goal-Question-Metric) queries. |
-| Bharath Ummaneni |  Creating SMART goals and GQM inquiries, establishing use cases and their scenarios, producing LaTeX documentation, managing the project, and leading team meetings. |
-| Ashish Upadhyay | Creating objectives and GQM (Goal-Question-Metric) queries, documenting and crafting use cases and their corresponding scenarios, arranging planned meetings, and holding team gatherings. |
-| Hema Deepthi Vangipurapu | Addressing problem 2 scenarios, specified use case, conducting a review of the problem 1, and documenting the report. |
-| Saryu Vasishat | The utilization of a use case diagram, two descriptions of use cases, along with six alternative inquiries and measurement criteria, aid in the facilitation of the meeting. |
+| Goutham Susarla | Problem 1: Preparing 2 Goal Specific Questions(1,2)
+Problem 2: Created 2 Use Case Descriptions (6)
+Developed LaTeX documentation |
+| Vishwassingh Tomar | Problem 1: Preparing 2 Goal Specific Questions(3,4)
+Problem 2: Created 1 Use Case Description (4 )
+Formulation of SMART Goal |
+| Bharath Ummaneni |  Problem 1: Preparing 2 Goal Specific Questions(11,12)
+Problem 2: Created 3 Use Case Descriptions (3)
+Developed LaTeX documentation |
+| Ashish Upadhyay | Problem 1: Preparing 2 Goal Specific Questions(5,6)
+Problem 2: Created 1 Use Case Description (7,8)
+Developed Use Case Diagram |
+| Hema Deepthi Vangipurapu | Problem 1: Preparing 2 Goal Specific Questions(7,8)
+Problem 2: Created 2 Use Case Descriptions (5 )
+Formulation of SMART Goal |
+| Saryu Vasishat | Problem 1: Preparing 2 Goal Specific Questions(9,10)
+Problem 2: Created 1 Use Case Description (1,2)
+Developed Use Case Diagram |
+
+
+Goutham Susarla 
+Vishwassingh
+Tomar
+
+Bharath
+Ummaneni
+
+Ashish Upadhyay 
+Hema Deepthi
+Vangipurapu
+
+Saryu Vasishat 
