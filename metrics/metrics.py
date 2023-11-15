@@ -1,4 +1,5 @@
-# metrics/metrics.py
+import tkinter as tk
+from tkinter import ttk
 import random
 
 class Metrics:
@@ -6,71 +7,42 @@ class Metrics:
         self.data = data
 
     def mean(self):
-        total = 0
-        for num in self.data:
-            total += num
-        return total / len(self.data) # Calculate mean
+        total = sum(self.data)
+        return total / len(self.data)
 
     def median(self):
-        sorted_data = self.bubble_sort(self.data)
+        sorted_data = sorted(self.data)
         n = len(sorted_data)
         if n % 2 == 0:
-            return (sorted_data[n//2 - 1] + sorted_data[n//2]) / 2 # Median is average of middle two numbers
+            return (sorted_data[n // 2 - 1] + sorted_data[n // 2]) / 2
         else:
-            return sorted_data[n//2] # Median is middle number
+            return sorted_data[n // 2]
 
     def mode(self):
         counts = {}
         for num in self.data:
-            if num in counts:
-                counts[num] += 1
-            else:
-                counts[num] = 1
-        mode = []
-        max_count = 0
-        for num, count in counts.items():
-            if count > max_count:
-                mode = [num]
-                max_count = count
-            elif count == max_count:
-                mode.append(num)
-        return mode # Most common numbers
+            counts[num] = counts.get(num, 0) + 1
+        mode = [k for k, v in counts.items() if v == max(counts.values())]
+        return mode
 
     def variance(self):
         mean = self.mean()
-        total = 0
-        for num in self.data:
-            total += (num - mean) ** 2
-        return total / len(self.data) # Average squared difference from mean
+        total = sum((num - mean) ** 2 for num in self.data)
+        return total / len(self.data)
 
     def mean_absolute_deviation(self):
         mean = self.mean()
-        total = 0
-        for num in self.data:
-            total += abs(num - mean)
-        return total / len(self.data) # Average absolute difference from mean
+        total = sum(abs(num - mean) for num in self.data)
+        return total / len(self.data)
 
     def standard_deviation(self):
-        mean = self.mean()
-        total = 0
-        for num in self.data:
-            total += (num - mean) ** 2
-        variance = total / len(self.data)
-        return self.sqrt(variance) # Square root of variance
+        return self.sqrt(self.variance())
 
     def min(self):
-        min_val = self.data[0]
-        for num in self.data:
-            if num < min_val:
-                min_val = num
-        return min_val # Smallest number
+        return min(self.data)
 
     def max(self):
-        max_val = self.data[0]
-        for num in self.data:
-            if num > max_val:
-                max_val = num
-        return max_val # Largest number
+        return max(self.data)
 
     def bubble_sort(self, data):
         n = len(data)
@@ -78,41 +50,108 @@ class Metrics:
             for j in range(0, n-i-1):
                 if data[j] > data[j+1]:
                     data[j], data[j+1] = data[j+1], data[j]
-        return data # Sort list using bubble sort
+        return data
 
     def sqrt(self, num):
         guess = num / 2
         while abs(guess ** 2 - num) > 0.0001:
             guess = (guess + num / guess) / 2
-        return guess # Calculate square root
+        return guess
 
-# Generate n random integers between 0 and 1000
-n = int(input("Enter a number greater than 1000: "))
-data = [random.randint(0, 1000) for _ in range(n)]
+class MetricsGUI:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Metrics Calculator")
+        self.metrics = None
+        self.generated_data = []
 
-# Create Metrics object and calculate statistics
-metrics = Metrics(data)
+        # Create and set up input entry
+        self.input_label = tk.Label(root, text="Enter a number greater than or equal to 1000:")
+        self.input_label.grid(row=0, column=0, columnspan=2, pady=5)
+        self.input_entry = tk.Entry(root)
+        self.input_entry.grid(row=1, column=0, columnspan=2, pady=5)
+        self.input_entry.bind("<Return>", lambda event: self.generate_data())
 
-#Print Mean
-print(f"Mean: {metrics.mean()}")
+        # Create and set up button for generating random data
+        self.generate_button = tk.Button(root, text="Generate Data", command=self.generate_data)
+        self.generate_button.grid(row=2, column=0, columnspan=2, pady=10)
 
-#Print Median
-print(f"Median: {metrics.median()}")
+        # Create and set up listbox for displaying generated data
+        self.data_listbox = tk.Listbox(root, height=10, width=40, selectmode=tk.MULTIPLE)
+        self.data_listbox.grid(row=0, rowspan=3, column=2, pady=10, padx=10, sticky="ns")
 
-#Print Mode
-print(f"Mode: {metrics.mode()}")
+        # Create scrollbar for data_listbox
+        self.scrollbar = tk.Scrollbar(root, command=self.data_listbox.yview)
+        self.scrollbar.grid(row=0, rowspan=3, column=3, pady=10, sticky="ns")
+        self.data_listbox.config(yscrollcommand=self.scrollbar.set)
 
-#Print Variance
-print(f"Variance: {metrics.variance()}")
+        # Create and set up button for copying data
+        self.copy_button = tk.Button(root, text="Copy Data", command=self.copy_data)
+        self.copy_button.grid(row=3, column=2, columnspan=2, pady=5)
 
-#Print Mean Absolute Deviation
-print(f"Mean Absolute Deviation: {metrics.mean_absolute_deviation()}")
+        # Create and set up result box
+        self.result_box = tk.Text(root, height=10, width=30)
+        self.result_box.grid(row=4, column=0, columnspan=4, pady=10)
 
-#Print Standard Deviation
-print(f"Standard Deviation: {metrics.standard_deviation()}")
+        # Create and set up buttons for each metric
+        metrics = ["Mean", "Median", "Mode", "Mean Absolute Deviation", "Standard Deviation", "Min", "Max"]
+        for i, metric in enumerate(metrics):
+            button = ttk.Button(root, text=metric, command=lambda m=metric: self.calculate_and_display(m))
+            button.grid(row=i + 5, column=0, columnspan=4, pady=5)
 
-#Print Min
-print(f"Min: {metrics.min()}")
+    def generate_data(self):
+        try:
+            n = int(self.input_entry.get())
+            if n < 1000:
+                raise ValueError("Please enter a number greater than or equal to 1000.")
+            data = [random.randint(0, 1000) for _ in range(n)]
+            self.metrics = Metrics(data)
+            self.generated_data.append(data)
+            self.update_data_listbox(data)
+            self.reset_result_box()
+        except ValueError as e:
+            self.result_box.delete(1.0, tk.END)  # Clear existing results
+            self.result_box.insert(tk.END, str(e))
 
-#Print Max
-print(f"Max: {metrics.max()}")
+    def calculate_and_display(self, metric):
+        try:
+            if self.metrics is not None:  # Check if data has been generated
+                # Convert metric label to snake_case
+                metric_method = metric.lower().replace(" ", "_")
+                result = getattr(self.metrics, metric_method)()
+                self.result_box.delete(1.0, tk.END)  # Clear existing results
+                self.result_box.insert(tk.END, f"{metric}: {result}")
+            else:
+                self.result_box.delete(1.0, tk.END)  # Clear existing results
+                self.result_box.insert(tk.END, "Please generate data first.")
+        except AttributeError:
+            self.result_box.delete(1.0, tk.END)  # Clear existing results
+            self.result_box.insert(tk.END, "Invalid metric or method.")
+
+    def update_data_listbox(self, data):
+        self.data_listbox.delete(0, tk.END)  # Clear existing items
+        formatted_data = ", ".join(map(str, data))
+        split_data = formatted_data.split(", ")
+        lines = [", ".join(split_data[i:i+10]) for i in range(0, len(split_data), 10)]
+        for i, line in enumerate(lines):
+            if i < len(lines) - 1:
+                self.data_listbox.insert(tk.END, line + ", ")
+            else:
+                self.data_listbox.insert(tk.END, line)
+
+    def copy_data(self):
+        all_data = self.data_listbox.get(0, tk.END)
+        clipboard_data = "".join(all_data)
+        self.root.clipboard_clear()
+        self.root.clipboard_append(clipboard_data)
+        self.root.update()  # Required to update clipboard
+        self.result_box.delete(1.0, tk.END)  # Clear existing results
+        self.result_box.insert(tk.END, "Data copied to clipboard.")
+
+    def reset_result_box(self):
+        self.result_box.delete(1.0, tk.END)  # Clear existing results
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = MetricsGUI(root)
+    root.mainloop()
